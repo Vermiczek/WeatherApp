@@ -1,0 +1,65 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 10px;
+    background: linear-gradient(to right, rgb(71, 235, 134), #6e6ef7, rgb(208, 230, 235));
+}
+
+
+
+.weather_board{
+    padding: 20px;
+    display: grid;
+    margin: 2rem;
+    align-items: stretch;
+    grid-template-columns:  repeat(3,14rem);
+    grid-template-rows: repeat(7,6rem);
+    grid-gap: 2rem;
+    opacity: 70%;
+}
+
+.weather_board .date{
+    grid-column: span 1;
+    left: 50%;
+}
+
+
+.weather_board button{
+    border-radius: 5px;
+    background-size: cover;
+    font-size: 15px;
+}
+
+.weather_board .button_board{
+    border-radius: 10px;
+    grid-column: span 2;
+    background-size: cover;
+    font-size: 15px;
+    font-weight: bolder;
+    color:rgb(10, 22, 90)
+}
+
+
+
+
+
+.daySlider{
+    grid-column:span 3;
+}
+
+.input_city{
+    grid-column:span 2;
+    border-radius:10px;
+    font-size:large;
+}
+
+.wide_button{
+grid-column: span 2;
+}
+
+.tall_button{
+    grid-row: span 2;
+    }
+
