@@ -27,11 +27,7 @@ export default function Timer(props)
     return () => clearInterval(interval);
   })
 
-  if(props.offset!=null)
-  
    return (<div className="timerDiv" style={{textAlign:"center", background:"black", color:"white", padding: "1rem", borderRadius: "10px"}}>{time}</div>)
-  else
-   return (<div></div>)
 }
 
 function calculateTime(hour, offset)

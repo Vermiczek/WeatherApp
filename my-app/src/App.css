@@ -15,17 +15,36 @@ body {
     margin: 2rem;
     align-items: stretch;
     grid-template-columns:  repeat(3,14rem);
-    grid-template-rows: repeat(7,6rem);
+    grid-template-rows: repeat(8,6rem);
     grid-gap: 2rem;
     opacity: 70%;
+
 }
 
-.weather_board .date{
-    grid-column: span 1;
-    left: 50%;
+.city_choice {
+
+    background-color:white;
+}
+
+.city_choice:hover {
+
+    background-color:black;
+    color: white;
 }
 
 
+.weather_board .suggestions{
+    background-color: "green";
+}
+
+.suggestions .suggestions-tier2{
+    background-color: "red";
+}
+
+.suggestions-parent{
+    background-color: "black";
+    opacity: 15%
+}
 .weather_board button{
     border-radius: 5px;
     background-size: cover;

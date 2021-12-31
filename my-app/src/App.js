@@ -2,8 +2,11 @@ import "./App.css"
 import React from 'react';
 import Timer from "./Timer"
 import Board from "./Board"
+import SearchWidget from "./Search";
+import { useState } from "react"
+import { useEffect } from "react";
 
-const apiKey1 = 'eOV7FL6vESOY9rFWIwLIFjY54uzNZJCe';
+const apiKey1 = '83yJHEFepUCspZ85A9A4liQSG0HVDNj4';
 
 function CityButton(props)
 {
@@ -35,11 +38,12 @@ class WeatherBoard extends React.Component {
   constructor(props) {
     super(props);
     this._downloadForecast = this._downloadForecast.bind(this);
-    this._findCity = this._findCity.bind(this);
     this._setValues = this._setValues.bind(this);
     this._setIndex = this._setIndex.bind(this);
-   this.state = {timeOffset: '',reload: false,minTemp: 0, date: ' ',maxTemp: 0,cityName: '',cityKey: '', dayIdx: 0,dayForecast: {weather: '', intensity: '', type: '', windSpeed: '', windDirection: '', setrise: ''}, nightForecast: {weather: '', intensity: '', type: '', windSpeed: '', windDirection: '', setrise:''}};
+
+   this.state = {timeOffset: '',reload: false,countryName:'',minTemp: 0,date: ' ',maxTemp: 0,cityName: '',cityKey: null, previousKey: null,dayIdx: 0,dayForecast: {weather: '', intensity: '', type: '', windSpeed: '', windDirection: '', setrise: ''}, nightForecast: {weather: '', intensity: '', type: '', windSpeed: '', windDirection: '', setrise:''}};
   }
+
 
   _downloadForecast()
   { 
@@ -62,36 +66,6 @@ class WeatherBoard extends React.Component {
   }
   }
 
-
-  _findCity(city)
-  {
-    let link1 = jointSearchLink(city);
-    var key, date;
-
-try{
-    fetch(link1)
-   .then(response => response.json())
-   .then((data) => {
-     key=data[0].Key;
-     date=data[0].TimeZone.GmtOffset;
-     if(city=='Havana'){
-       key=data[1].Key;
-       date=data[1].TimeZone.GmtOffset;
-       }
-     this.setState(
-       {
-         timeOffset: date,
-         cityName: city,
-         cityKey: key,
-         data: null
-       } 
-     );
-    this._downloadForecast();
-  })}
-catch{
-  console.log("Error loading data")
-}
-   }
 
   _setValues()
   {  
@@ -125,11 +99,33 @@ catch{
      this.setState({dayIdx: event.target.value, reload: true});
   }
 
+  _setCity = (childData) => {
+  console.log("Old key:"+this.state.cityKey);
+  this.setState({
+    cityKey: childData.key,
+    cityName: childData.name,
+    countryName: childData.country,
+    timeOffset: childData.offset,
+    reload: true
+  })
+  console.log();
+}
+
+ 
+
   render() {
     if(this.state.reload==true)
     {
       this._setValues();
     }
+    if(this.state.previousKey!=this.state.cityKey)
+    {
+    this._downloadForecast();
+     console.log("New key:"+this.state.cityKey);
+     this.setState({previousKey: this.state.cityKey});
+    }
+
+    console.log(this.state.data);
     
     var printProps={
     minTempStr: '',
@@ -141,22 +137,22 @@ catch{
     }
 
     if(this.state.data!=null){
+      console.log(this.state.data);
     printProps = {
-      minTempStr: "Minimum temperature: "+ (parseInt(this.state.minTemp) -30) + "C",
-    maxTempStr: "Maximum temperature: "+ (parseInt(this.state.maxTemp) -30) + "C",
+      minTempStr: "Minimum temperature: "+ (parseInt(this.state.minTemp) - 30) + "C",
+    maxTempStr: "Maximum temperature: "+ (parseInt(this.state.maxTemp) - 30) + "C",
     sunrise: "Sunrise at "+  this.state.dayForecast.setrise,
     sunset: "Sunset at "+  this.state.nightForecast.setrise,
     date: this.state.date,
     cityName: this.state.cityName,
     }
     }
-    console.log(this.state.data);
-    if(this.state.data!=null)
+    
       return (
       <div className = "weather_board">
-      <CityButton value="Poznan" className = "chooseCityButton" event = {()=>this._findCity('Poznan')}/>
-      <CityButton value="Havana" className = "chooseCityButton" event = {()=>this._findCity('Havana')}/>
-      <CityButton value="London" className = "chooseCityButton" event = {()=>this._findCity('London')}/>
+      <div></div>
+      <SearchWidget setcity={this._setCity}/>
+      <div></div>
       <input type="range" className="daySlider" min="0" max="4" step="1" value = {this.state.dayIdx} onChange={this._setIndex} ></input>
       <Board className = "Day" textvalue = "Day" dataHelper={this.state.dayForecast} style={{gridRow: "span 2", background: "#F3FF9A", color: "blue", padding:"1rem", opacity:"90%", borderRadius:"10px"}}/>
       <Timer className ="timer" offset = {this.state.timeOffset} />
@@ -164,17 +160,13 @@ catch{
       <Data printProps={printProps}/>
       </div>
     );
-    else{
-      return (
-        <div className = "weather_board">
-        <CityButton value="Poznan" className = "chooseCityButton" event = {()=>this._findCity('Poznan')}/>
-        <CityButton value="Havana" className = "chooseCityButton" event = {()=>this._findCity('Havana')}/>
-        <CityButton value="London" className = "chooseCityButton" event = {()=>this._findCity('London')}/>
-        </div>
-      );
-    }
 }}
 export default WeatherBoard
+
+function Measurements(props)
+{
+
+}
 
 function Data(props)
 {
