@@ -7,7 +7,7 @@ I finish a project I usually stockpile enough knowledge to realize that to fix s
 
 
 This is pretty much what happened to this project - it's main purpose was to teach me React and it accomplished it with great results so I'll leave it
-at that. It looks and works pretty good anyway, I might as well move on to a more ambitious project. 
+at that. It looks and works alright anyway, I might as well move on to a more ambitious project. 
 
 
 
